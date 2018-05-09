@@ -1,8 +1,8 @@
 <?php
 /*
- * This file is a part of Mibew Google Maps Plugin.
+ * This file is a part of Mibew Open Street Map Plugin.
  *
- * Copyright 2014 Dmitriy Simushev <simushevds@gmail.com>.
+ * Copyright 2014-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,10 @@
  */
 
 /**
- * @file The main file of Mibew:GoogleMaps plugin.
+ * @file The main file of Mibew:OpenStreetMap plugin.
  */
 
-namespace Mibew\Mibew\Plugin\GoogleMaps;
+namespace Mibew\Mibew\Plugin\OpenStreetMap;
 
 use Mibew\Asset\AssetManagerInterface;
 use Mibew\EventDispatcher\EventDispatcher;
@@ -29,26 +29,18 @@ use Mibew\EventDispatcher\Events;
 use Mibew\Plugin\PluginManager;
 
 /**
- * Provides an ability to view visitors at Google Maps.
+ * Provides an ability to view visitors on Open Street Map.
  */
 class Plugin extends \Mibew\Plugin\AbstractPlugin implements \Mibew\Plugin\PluginInterface
 {
     /**
      * Class constructor.
      *
-     * @param array $config List of the plugin config. The following options are
-     * supported:
-     *   - 'api_key': string, Google Maps API key that should be used to render
-     *     maps.
+     * @param array $config List of the plugin config.
+     *
      */
     public function __construct($config)
     {
-        if (empty($config['api_key'])) {
-            trigger_error('Google API key cannot be empty', E_USER_WARNING);
-
-            return;
-        }
-        parent::__construct($config);
 
         $this->initialized = true;
     }
@@ -67,14 +59,14 @@ class Plugin extends \Mibew\Plugin\AbstractPlugin implements \Mibew\Plugin\Plugi
     /**
      * A handler for {@link \Mibew\EventDispatcher\Events::USERS_FUNCTION_CALL}.
      *
-     * Provides an ability to use "googleMapsGetInfo" function at the client
+     * Provides an ability to use "openStreetMapGetInfo" function at the client
      * side.
      *
      * @see \Mibew\EventDispatcher\Events::USERS_FUNCTION_CALL
      */
     public function usersFunctionCallHandler(&$function)
     {
-        if ($function['function'] == 'googleMapsGetInfo') {
+        if ($function['function'] == 'openStreetMapGetInfo') {
             // An IP string can contain more than one IP address. For example it
             // can be something like this: "x.x.x.x (x.x.x.x)". We need to
             // use only first one.
@@ -111,10 +103,7 @@ class Plugin extends \Mibew\Plugin\AbstractPlugin implements \Mibew\Plugin\Plugi
     {
         if ($args['request']->attributes->get('_route') == 'users') {
             $args['js'][] = $this->getFilesPath() . '/vendor/jquery-colorbox/jquery.colorbox-min.js';
-            $args['js'][] = array(
-                'content' => $this->getApiUrl(),
-                'type' => AssetManagerInterface::ABSOLUTE_URL,
-            );
+            $args['js'][] = $this->getFilesPath() . '/vendor/leaflet/dist/leaflet.js';
             $args['js'][] = $this->getFilesPath() . '/js/plugin.js';
         }
     }
@@ -128,6 +117,7 @@ class Plugin extends \Mibew\Plugin\AbstractPlugin implements \Mibew\Plugin\Plugi
     {
         if ($args['request']->attributes->get('_route') == 'users') {
             $args['css'][] = $this->getFilesPath() . '/vendor/jquery-colorbox/example3/colorbox.css';
+            $args['css'][] = $this->getFilesPath() . '/vendor/leaflet/dist/leaflet.css';
             $args['css'][] = $this->getFilesPath() . '/css/styles.css';
         }
     }
@@ -137,7 +127,7 @@ class Plugin extends \Mibew\Plugin\AbstractPlugin implements \Mibew\Plugin\Plugi
      */
     public static function getVersion()
     {
-        return '1.1.0';
+        return '0.1.0';
     }
 
     /**
@@ -146,22 +136,5 @@ class Plugin extends \Mibew\Plugin\AbstractPlugin implements \Mibew\Plugin\Plugi
     public static function getDependencies()
     {
         return array('Mibew:GeoIp' => '1.*');
-    }
-
-    /**
-     * Builds URL for Google Maps API.
-     *
-     * @return string API URL
-     * @throws \RuntimeException if API key was not set correctly.
-     */
-    protected function getApiUrl()
-    {
-        if (empty($this->config['api_key'])) {
-            throw new \RuntimeException('Google API key cannot be empty');
-        }
-
-        return '//maps.googleapis.com/maps/api/js?key='
-            . $this->config['api_key']
-            . '&sensor=false';
     }
 }

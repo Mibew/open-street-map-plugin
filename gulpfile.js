@@ -23,9 +23,9 @@ gulp.task('prepare-release', ['bower'], function() {
 
     return eventStream.merge(
         getSources()
-            .pipe(zip('google-maps-plugin-' + version + '.zip')),
+            .pipe(zip('open-street-map-plugin-' + version + '.zip')),
         getSources()
-            .pipe(tar('google-maps-plugin-' + version + '.tar'))
+            .pipe(tar('open-street-map-plugin-' + version + '.tar'))
             .pipe(gzip())
     )
     .pipe(chmod(0644))
@@ -51,11 +51,13 @@ var getSources = function() {
             'css/*',
             'vendor/jquery-colorbox/README.md',
             'vendor/jquery-colorbox/jquery.colorbox-min.js',
-            'vendor/jquery-colorbox/example3/**/*'
+            'vendor/jquery-colorbox/example3/**/*',
+            'vendor/leaflet/dist/leaflet.*',
+            'vendor/leaflet/dist/images/*',
         ],
         {base: './'}
     )
     .pipe(rename(function(path) {
-        path.dirname = 'Mibew/Mibew/Plugin/GoogleMaps/' + path.dirname;
+        path.dirname = 'Mibew/Mibew/Plugin/OpenStreetMap/' + path.dirname;
     }));
 }

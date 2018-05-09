@@ -1,7 +1,7 @@
 /*!
- * This file is a part of Mibew Google Maps Plugin.
+ * This file is a part of Mibew Open Street Map Plugin.
  *
- * Copyright 2014 Dmitriy Simushev <simushevds@gmail.com>.
+ * Copyright 2014-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-(function (Mibew, $, google) {
+(function (Mibew, $, L) {
     /**
      * Display popup with a map and a marker on it.
      *
@@ -35,17 +35,15 @@
         $.colorbox({
             html: $canvas,
             onComplete: function() {
-                var position = new google.maps.LatLng(latitude, longitude),
-                    map = new google.maps.Map($canvas.get(0), {
-                        center: position,
-                        zoom: (city ? 8 : 6),
-                        mapTypeId: google.maps.MapTypeId.ROADMAP
-                    }),
-                    marker = new google.maps.Marker({
-                        map: map,
-                        position: position,
-                        title: city ? (city + ' (' + country + ')') : country
-                    });
+                var map = L.map('map-canvas', {
+                        center: [latitude, longitude],
+                        zoom: 9
+                });
+                var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+                var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
+                var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 19, attribution: osmAttrib});
+                map.addLayer(osm);
+                L.marker([latitude, longitude]).addTo(map).bindPopup('<strong>' + city + ', ' + country + '</strong>').openPopup();
             }
         });
     }
@@ -64,7 +62,7 @@
         if (ip) {
             server.callFunctions(
                 [{
-                    'function': 'googleMapsGetInfo',
+                    'function': 'openStreetMapGetInfo',
                     'arguments': {
                         'agentId': agentId,
                         'ip': ip,
@@ -126,4 +124,4 @@
         }
     );
 
-})(Mibew, jQuery, google);
+})(Mibew, jQuery, L);

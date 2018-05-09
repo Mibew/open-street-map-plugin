@@ -1,36 +1,22 @@
-# Google Maps plugin
+# Open Street Map plugin
 
-It shows your clients' location at Google maps!
+Based upon the code of [Mibew Google Maps plugin](https://github.com/Mibew/google-maps-plugin).
 
+Displays a visitor's location using Open Street Map service.
 
 ## Installation
 
-1. Get the archive with the plugin sources. You can download it from the [official site](https://mibew.org/plugins#mibew-google-maps) or build the plugin from sources.
+1. Get the archive with the plugin sources. You can download it from the [official site](https://mibew.org/plugins#mibew-open-street-map) or build the plugin from sources.
 
 2. Untar/unzip the plugin's archive.
 
 3. Put files of the plugins to the `<Mibew root>/plugins`  folder.
 
-4. Add plugins configs to "plugins" structure in "`<Mibew root>`/configs/config.yml". If the "plugins" stucture looks like `plugins: []` it will become:
-    ```yaml
-    plugins:
-        "Mibew:GoogleMaps": # Plugin's configurations are described below
-            api_key: "secret API key provided by Google"
-    ```
-
-5. Navigate to "`<Mibew Base URL>`/operator/plugin" page and enable the plugin.
-
+4. Navigate to "`<Mibew Base URL>`/operator/plugin" page and enable the plugin.
 
 ## Plugin's configurations
 
-The plugin can be configured with values in "`<Mibew root>`/configs/config.yml" file.
-
-### config.api_key
-
-Type: `String`
-
-Google Maps API key that will be used to render maps. You can learn how to get the key [here](https://developers.google.com/maps/documentation/javascript/tutorial#api_key).
-
+This plugin does not require any configuration.
 
 ## Build from sources
 
