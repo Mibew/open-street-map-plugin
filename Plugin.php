@@ -2,7 +2,7 @@
 /*
  * This file is a part of Mibew Open Street Map Plugin.
  *
- * Copyright 2014-2018 the original author or authors.
+ * Copyright 2014-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -105,7 +105,8 @@ class Plugin extends \Mibew\Plugin\AbstractPlugin implements \Mibew\Plugin\Plugi
             $filepath = str_replace(DIRECTORY_SEPARATOR, '/', $this->getFilesPath());
             $args['js'][] = $filepath . '/vendor/jquery-colorbox/jquery.colorbox-min.js';
             $args['js'][] = $filepath . '/vendor/leaflet/dist/leaflet.js';
-            $args['js'][] = $filepath . '/js/plugin.js';
+            $args['js'][] = $filepath . '/js/common.js';
+            $args['js'][] = $filepath . '/js/users.js';
         }
     }
 
